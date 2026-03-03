@@ -1,0 +1,101 @@
+services:
+  postgres:
+    image: docker.io/postgres:18-alpine
+    container_name: netbox-postgres
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - netbox-postgres:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -q -t 2 -d $${POSTGRES_DB} -U $${POSTGRES_USER}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  redis:
+    image: docker.io/valkey/valkey:9.0-alpine
+    container_name: netbox-redis
+    command: ["sh", "-c", "valkey-server --appendonly yes --requirepass $${REDIS_PASSWORD}"]
+    environment:
+      REDIS_PASSWORD: ${REDIS_PASSWORD}
+    volumes:
+      - netbox-redis-data:/data
+    healthcheck: &redis-health
+      test: ["CMD-SHELL", "[ $$(valkey-cli --pass \"$${REDIS_PASSWORD}\" ping) = 'PONG' ]"]
+      interval: 2s
+      timeout: 3s
+      retries: 20
+
+  redis-cache:
+    image: docker.io/valkey/valkey:9.0-alpine
+    container_name: netbox-redis-cache
+    command: ["sh", "-c", "valkey-server --requirepass $${REDIS_CACHE_PASSWORD}"]
+    environment:
+      REDIS_CACHE_PASSWORD: ${REDIS_CACHE_PASSWORD}
+    volumes:
+      - netbox-redis-cache-data:/data
+    healthcheck:
+      test: ["CMD-SHELL", "[ $$(valkey-cli --pass \"$${REDIS_CACHE_PASSWORD}\" ping) = 'PONG' ]"]
+      interval: 2s
+      timeout: 3s
+      retries: 20
+
+  netbox:
+    image: docker.io/netboxcommunity/netbox:${NETBOX_VERSION-v4.5-4.0.1}
+    container_name: netbox
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      redis-cache:
+        condition: service_healthy
+    env_file:
+      - .env
+    ports:
+      - "8000:8080"
+    volumes:
+      - ./configuration:/etc/netbox/config:ro
+      - ./custom_pipeline.py:/opt/netbox/netbox/netbox/custom_pipeline.py:ro
+      - netbox-media-files:/opt/netbox/netbox/media
+      - netbox-reports-files:/opt/netbox/netbox/reports
+      - netbox-scripts-files:/opt/netbox/netbox/scripts
+    # Healthcheck uses IPv6 loopback to avoid the "listening on :::8080" issue
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f -g http://[::1]:8080/login/ >/dev/null || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 20
+      start_period: 180s
+
+  netbox-worker:
+    image: docker.io/netboxcommunity/netbox:${NETBOX_VERSION-v4.5-4.0.1}
+    container_name: netbox-worker
+    depends_on:
+      netbox:
+        condition: service_healthy
+    env_file:
+      - .env
+    volumes:
+      - ./configuration:/etc/netbox/config:ro
+      - ./custom_pipeline.py:/opt/netbox/netbox/netbox/custom_pipeline.py:ro
+      - netbox-media-files:/opt/netbox/netbox/media
+      - netbox-reports-files:/opt/netbox/netbox/reports
+      - netbox-scripts-files:/opt/netbox/netbox/scripts
+    command: ["/opt/netbox/venv/bin/python", "/opt/netbox/netbox/manage.py", "rqworker"]
+    healthcheck:
+      test: ["CMD-SHELL", "ps aux | grep -v grep | grep -q rqworker || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 20
+      start_period: 30s
+
+volumes:
+  netbox-postgres:
+  netbox-redis-data:
+  netbox-redis-cache-data:
+  netbox-media-files:
+  netbox-reports-files:
+  netbox-scripts-files:
