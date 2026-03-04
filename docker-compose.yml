@@ -57,7 +57,6 @@ services:
     ports:
       - "8000:8080"
     volumes:
-      - ./configuration:/etc/netbox/config:ro
       - ./custom_pipeline.py:/opt/netbox/netbox/netbox/custom_pipeline.py:ro
       - netbox-media-files:/opt/netbox/netbox/media
       - netbox-reports-files:/opt/netbox/netbox/reports
@@ -79,7 +78,6 @@ services:
     env_file:
       - .env
     volumes:
-      - ./configuration:/etc/netbox/config:ro
       - ./custom_pipeline.py:/opt/netbox/netbox/netbox/custom_pipeline.py:ro
       - netbox-media-files:/opt/netbox/netbox/media
       - netbox-reports-files:/opt/netbox/netbox/reports
