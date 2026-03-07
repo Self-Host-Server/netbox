@@ -59,6 +59,7 @@ services:
       - "8000:8080"
     volumes:
       - ./custom_pipeline.py:/opt/netbox/netbox/netbox/custom_pipeline.py:ro
+      - ./configuration/authentik.py:/etc/netbox/config/authentik.py:ro
       - netbox-media-files:/opt/netbox/netbox/media
       - netbox-reports-files:/opt/netbox/netbox/reports
       - netbox-scripts-files:/opt/netbox/netbox/scripts
@@ -83,6 +84,7 @@ services:
       - .env
     volumes:
       - ./custom_pipeline.py:/opt/netbox/netbox/netbox/custom_pipeline.py:ro
+      - ./configuration/authentik.py:/etc/netbox/config/authentik.py:ro
       - netbox-media-files:/opt/netbox/netbox/media
       - netbox-reports-files:/opt/netbox/netbox/reports
       - netbox-scripts-files:/opt/netbox/netbox/scripts

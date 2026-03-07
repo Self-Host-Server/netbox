@@ -1,4 +1,14 @@
-from django.contrib.auth.models import Group
+from social_core.exceptions import AuthForbidden
+
+from users.models import Group
+
+ALLOWED_GROUPS = {"Netbox_Users", "Netbox_Admins"}
+
+
+def check_allowed_groups(response, backend, *args, **kwargs):
+    groups = set(response.get("groups", []) or [])
+    if not groups & ALLOWED_GROUPS:
+        raise AuthForbidden(backend)
 
 
 def add_groups(response, user, backend, *args, **kwargs):
@@ -22,6 +32,6 @@ def remove_groups(response, user, backend, *args, **kwargs):
 
 def set_roles(response, user, backend, *args, **kwargs):
     groups = set(response.get("groups", []) or [])
-    user.is_superuser = "superusers" in groups
-    user.is_staff = "staff" in groups
+    user.is_superuser = "Netbox_Admins" in groups
+    user.is_staff = "Netbox_Admins" in groups
     user.save()
