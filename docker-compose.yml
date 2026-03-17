@@ -110,7 +110,7 @@ services:
         condition: service_healthy
     env_file:
       - .env
-    entrypoint: ["/bin/sh", "-c", "envsubst < /tmp/settings.ini.tmpl > /app/settings.ini && exec python3 netbox-sync.py"]
+    entrypoint: ["/bin/sh", "-c", "python3 -c 'import os,sys;print(os.path.expandvars(sys.stdin.read()))' < /tmp/settings.ini.tmpl > /app/settings.ini && exec python3 netbox-sync.py"]
     volumes:
       - ./netbox-sync.ini:/tmp/settings.ini.tmpl:ro
 
