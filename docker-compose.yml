@@ -110,8 +110,9 @@ services:
         condition: service_healthy
     env_file:
       - .env
+    entrypoint: ["/bin/sh", "-c", "envsubst < /tmp/settings.ini.tmpl > /app/settings.ini && exec python3 netbox-sync.py"]
     volumes:
-      - ./netbox-sync.ini:/app/settings.ini:ro
+      - ./netbox-sync.ini:/tmp/settings.ini.tmpl:ro
 
 volumes:
   netbox-postgres:
