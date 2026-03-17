@@ -102,7 +102,7 @@ services:
       start_period: 30s
 
   netbox-sync:
-    image: ghcr.io/bb-ricardo/netbox-sync:latest
+    image: ghcr.io/bb-ricardo/netbox-sync:development
     container_name: netbox-sync
     restart: unless-stopped
     depends_on:
