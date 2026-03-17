@@ -110,7 +110,7 @@ services:
         condition: service_healthy
     env_file:
       - .env
-    entrypoint: ["/bin/sh", "-c", "awk '{for(k in ENVIRON){gsub(\"\\\\${\"k\"}\",ENVIRON[k])}; print}' /tmp/config.yaml.tmpl > /app/config.yaml && ./main"]
+    entrypoint: ["/bin/sh", "-c", "awk '{for(k in ENVIRON){gsub(\"\\\\$${\"k\"}\",ENVIRON[k])}; print}' /tmp/config.yaml.tmpl > /app/config.yaml && ./main"]
     volumes:
       - ./netbox-ssot.yaml:/tmp/config.yaml.tmpl:ro
 
