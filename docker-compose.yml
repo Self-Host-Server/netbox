@@ -102,7 +102,7 @@ services:
       start_period: 30s
 
   netbox-ssot:
-    image: ghcr.io/bl4ko/netbox-ssot:v1.17.1
+    image: ghcr.io/bl4ko/netbox-ssot:v1.15.5
     container_name: netbox-ssot
     restart: unless-stopped
     depends_on:
