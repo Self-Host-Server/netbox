@@ -78,41 +78,6 @@ services:
       retries: 20
       start_period: 180s
 
-  netbox-worker:
-    image: docker.io/netboxcommunity/netbox:${NETBOX_VERSION-v4.5-4.0.1}
-    container_name: netbox-worker
-    restart: unless-stopped
-    depends_on:
-      netbox:
-        condition: service_healthy
-    env_file:
-      - .env
-    volumes:
-      - ./custom_pipeline.py:/opt/netbox/netbox/netbox/custom_pipeline.py:ro
-      - ./configuration/authentik.py:/etc/netbox/config/authentik.py:ro
-      - netbox-media-files:/opt/netbox/netbox/media
-      - netbox-reports-files:/opt/netbox/netbox/reports
-      - netbox-scripts-files:/opt/netbox/netbox/scripts
-    command: ["/opt/netbox/venv/bin/python", "/opt/netbox/netbox/manage.py", "rqworker"]
-    healthcheck:
-      test: ["CMD-SHELL", "ps aux | grep -v grep | grep -q rqworker || exit 1"]
-      interval: 15s
-      timeout: 5s
-      retries: 20
-      start_period: 30s
-
-  netbox-ssot:
-    image: ghcr.io/bl4ko/netbox-ssot:v1.15.5
-    container_name: netbox-ssot
-    restart: unless-stopped
-    depends_on:
-      netbox:
-        condition: service_healthy
-    env_file:
-      - .env
-    entrypoint: ["/bin/sh", "-c", "awk '{for(k in ENVIRON){gsub(\"\\\\$${\"k\"}\",ENVIRON[k])}; print}' /tmp/config.yaml.tmpl > /app/config.yaml && ./main"]
-    volumes:
-      - ./netbox-ssot.yaml:/tmp/config.yaml.tmpl:ro
 
 volumes:
   netbox-postgres:
