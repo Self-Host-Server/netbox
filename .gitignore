@@ -2,3 +2,7 @@
 .env
 .vscode
 .giga
+.cursor
+.cursorrules
+AGENTS.md
+copilot-instructions.md
