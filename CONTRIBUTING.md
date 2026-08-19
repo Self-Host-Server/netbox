@@ -34,14 +34,14 @@ accordingly.
 Commit subjects **must** use [Conventional Commits](https://www.conventionalcommits.org/)
 prefixes:
 
-| Prefix | Use for |
-| --- | --- |
-| `feat:` | A new capability |
-| `fix:` | A bug fix |
-| `docs:` | Documentation only |
-| `refactor:` | Code change that isn't a fix or a feature |
-| `perf:` | Performance improvement |
-| `test:` | Adding or correcting tests |
+| Prefix                                 | Use for                                         |
+| -------------------------------------- | ----------------------------------------------- |
+| `feat:`                                | A new capability                                |
+| `fix:`                                 | A bug fix                                       |
+| `docs:`                                | Documentation only                              |
+| `refactor:`                            | Code change that isn't a fix or a feature       |
+| `perf:`                                | Performance improvement                         |
+| `test:`                                | Adding or correcting tests                      |
 | `style:` / `build:` / `ci:` / `chore:` | Formatting, tooling, CI, dependency bumps, etc. |
 
 Add `!` after the type (e.g. `fix!:`) or a `BREAKING CHANGE:` footer for a breaking change.
