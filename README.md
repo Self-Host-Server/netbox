@@ -46,14 +46,14 @@ For a full walkthrough, including how to configure Authentik as the OIDC provide
 
 ## Repository layout
 
-| Path                         | Purpose                                                                                       |
-| ---------------------------- | --------------------------------------------------------------------------------------------- |
-| `compose.yml`                | Service definitions for Postgres, Redis/Valkey, and NetBox                                    |
-| `.env.sample`                | Template for the required environment variables (copy to `.env`, never commit `.env`)         |
-| `configuration/authentik.py` | NetBox config plugin wiring OIDC settings and the auth pipeline                               |
-| `custom_pipeline.py`         | `python-social-auth` pipeline steps: group allow-listing and role/group sync from OIDC claims |
-| `SETUP.md`                   | Full setup walkthrough, including Authentik OIDC provider configuration                       |
-| `.gitlab-ci.yml`             | CI pipeline: secret detection on every push                                                   |
+| Path | Purpose |
+| --- | --- |
+| `compose.yml` | Service definitions for Postgres, Redis/Valkey, and NetBox |
+| `.env.sample` | Template for the required environment variables (copy to `.env`, never commit `.env`) |
+| `configuration/authentik.py` | NetBox config plugin wiring OIDC settings and the auth pipeline |
+| `custom_pipeline.py` | `python-social-auth` pipeline steps: group allow-listing and role/group sync from OIDC claims |
+| `SETUP.md` | Full setup walkthrough, including Authentik OIDC provider configuration |
+| `.github/workflows/secret-detection.yml` | CI workflow: secret detection on every push/PR |
 
 ## Authentication
 
@@ -65,6 +65,7 @@ Authentik revokes NetBox access/roles on their next sign-in.
 
 ## Security
 
-Secrets live only in `.env` (git-ignored) and are never committed. GitLab CI runs secret
-detection on every push. If you rotate a credential, update `.env` on the host directly —
-`.env.sample` should only ever contain placeholders.
+Secrets live only in `.env` (git-ignored) and are never committed. A GitHub Actions
+workflow runs secret detection on every push and pull request. If you rotate a
+credential, update `.env` on the host directly — `.env.sample` should only ever contain
+placeholders.

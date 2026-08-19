@@ -37,6 +37,7 @@ self-evident from the diff.
 
 ## Security
 
-GitLab CI runs secret detection (`.gitlab-ci.yml`) on every push. A pipeline failure on
-that stage almost always means a real secret was staged — rotate the credential and scrub
-it from history rather than force-pushing over it silently; loop in the repo owners.
+A GitHub Actions workflow (`.github/workflows/secret-detection.yml`) runs secret
+detection on every push and pull request. A failed run almost always means a real secret
+was staged — rotate the credential and scrub it from history rather than force-pushing
+over it silently; loop in the repo owners.
