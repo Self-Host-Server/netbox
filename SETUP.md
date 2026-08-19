@@ -1,6 +1,6 @@
 # Setup guide
 
-Detailed walkthrough for standing up this NetBox deployment from scratch, including
+Detailed walkthrough for setting up this NetBox deployment from scratch, including
 configuring Authentik as the OIDC provider. For a quick reference, see the
 [README](README.md#setup).
 
