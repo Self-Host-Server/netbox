@@ -20,20 +20,6 @@ body = """
 """
 trim = true
 
-[tool.git-cliff.git]
-conventional_commits = true
-filter_unconventional = false
-commit_parsers = [
-  { message = "^feat", group = "✨ Features" },
-  { message = "^fix", group = "🐛 Bug Fixes" },
-  { message = "^docs", group = "📚 Documentation" },
-  { message = "^refactor", group = "♻️ Refactoring" },
-  { message = "^test", group = "🧪 Tests" },
-  { message = "^perf", group = "⚡ Performance" },
-  { message = "^chore", group = "🔧 Chores" },
-  { message = "^lint", group = "🔧 Chores" },
-  { message = ".*", group = "📝 Changes" },
-]
 
 # =============================================================================
 # RUFF — Python linter & formatter
@@ -93,16 +79,6 @@ commands = [
   ],
 ]
 
-[tool.tox.env."combined-imports-check"]
-skip_install = true
-deps = []
-commands = [["python3", "Python/scripts/combined_imports_check.py"]]
-
-[tool.tox.env."no-classes-check"]
-skip_install = true
-deps = []
-commands = [["python3", "Python/scripts/no_classes_check.py"]]
-
 # --- Formatting -------------------------------------------------------------
 
 [tool.tox.env.format]
@@ -110,11 +86,6 @@ skip_install = true
 deps = ["ruff", "ty"]
 allowlist_externals = ["npx"]
 commands = [
-  [
-    "python3",
-    "Python/scripts/combined_imports_check.py",
-    "--fix",
-  ],
   [
     "ruff",
     "format",
@@ -192,11 +163,6 @@ commands = [
   [
     "tox",
     "-e",
-    "no-classes-check",
-  ],
-  [
-    "tox",
-    "-e",
     "lint",
   ],
   [
@@ -213,11 +179,6 @@ commands = [
     "tox",
     "-e",
     "toml-lint",
-  ],
-  [
-    "tox",
-    "-e",
-    "combined-imports-check",
   ],
 ]
 
