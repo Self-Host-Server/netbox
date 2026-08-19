@@ -48,26 +48,26 @@ For a full walkthrough, including how to configure Authentik as the OIDC provide
 
 ### Deployment
 
-| Path | Purpose |
-| --- | --- |
-| `compose.yml` | Service definitions for Postgres, Redis/Valkey, and NetBox |
-| `.env.sample` | Template for the required environment variables (copy to `.env`, never commit `.env`) |
-| `configuration/authentik.py` | NetBox config plugin wiring OIDC settings and the auth pipeline |
-| `custom_pipeline.py` | `python-social-auth` pipeline steps: group allow-listing and role/group sync from OIDC claims |
-| `SETUP.md` | Full setup walkthrough, including Authentik OIDC provider configuration |
+| Path                         | Purpose                                                                                       |
+| ---------------------------- | --------------------------------------------------------------------------------------------- |
+| `compose.yml`                | Service definitions for Postgres, Redis/Valkey, and NetBox                                    |
+| `.env.sample`                | Template for the required environment variables (copy to `.env`, never commit `.env`)         |
+| `configuration/authentik.py` | NetBox config plugin wiring OIDC settings and the auth pipeline                               |
+| `custom_pipeline.py`         | `python-social-auth` pipeline steps: group allow-listing and role/group sync from OIDC claims |
+| `SETUP.md`                   | Full setup walkthrough, including Authentik OIDC provider configuration                       |
 
 ### Development tooling
 
-| Path | Purpose |
-| --- | --- |
-| `pyproject.toml` | `ruff` lint/format config, `git-cliff` changelog config, and `tox` env definitions |
-| `requirements.txt` | Python tooling deps (`ruff`, `tox`, `nodeenv`) |
-| `environment.yml` | Optional conda environment for local development |
-| `package.json` / `package-lock.json` | `prettier` and `textlint` deps used by the `tox` format/lint envs |
-| `.github/workflows/secret-detection.yml` | CI workflow: secret detection on every push/PR |
-| `.github/workflows/tests.yml` | CI workflow: runs the full lint/format-check suite via `tox -e github` |
-| `.github/workflows/release.yml` | CI workflow: auto-versions and publishes a GitHub Release on push to `main` |
-| `.github/scripts/gen_release_notes.py` | Renders the release changelog from `git-cliff` output |
+| Path                                     | Purpose                                                                            |
+| ---------------------------------------- | ---------------------------------------------------------------------------------- |
+| `pyproject.toml`                         | `ruff` lint/format config, `git-cliff` changelog config, and `tox` env definitions |
+| `requirements.txt`                       | Python tooling deps (`ruff`, `tox`, `nodeenv`)                                     |
+| `environment.yml`                        | Optional conda environment for local development                                   |
+| `package.json` / `package-lock.json`     | `prettier` and `textlint` deps used by the `tox` format/lint envs                  |
+| `.github/workflows/secret-detection.yml` | CI workflow: secret detection on every push/PR                                     |
+| `.github/workflows/tests.yml`            | CI workflow: runs the full lint/format-check suite via `tox -e github`             |
+| `.github/workflows/release.yml`          | CI workflow: auto-versions and publishes a GitHub Release on push to `main`        |
+| `.github/scripts/gen_release_notes.py`   | Renders the release changelog from `git-cliff` output                              |
 
 ## Development
 
