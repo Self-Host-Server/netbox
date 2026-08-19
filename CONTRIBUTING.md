@@ -28,8 +28,6 @@ accordingly.
   authorization — verify a login round-trip against a real or test Authentik instance
   before merging, including both an allowed and a non-member group to confirm the deny
   path still works.
-- Keep `netbox-ssot.yaml` and `netbox-sync.ini` consistent with each other where they
-  configure the same source, even though only one sync tool is typically run at a time.
 
 ## Commit messages
 

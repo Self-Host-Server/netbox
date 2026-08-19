@@ -1,8 +1,7 @@
 # NetBox
 
 Docker Compose deployment of [NetBox](https://github.com/netbox-community/netbox) for
-infrastructure documentation and IPAM/DCIM, with Authentik OIDC authentication and
-automated inventory sync from Proxmox via NetBox SSOT.
+infrastructure documentation and IPAM/DCIM, with Authentik OIDC authentication.
 
 ## Stack
 
@@ -10,14 +9,12 @@ automated inventory sync from Proxmox via NetBox SSOT.
 - **PostgreSQL 18** — primary datastore
 - **Valkey** (Redis-compatible) — task queue (`redis`) and cache (`redis-cache`), separate instances
 - **Authentik** — external OIDC provider for remote authentication and group/role sync
-- **NetBox SSOT** — syncs Proxmox hosts/VMs into NetBox as a source of truth
 
 ## Prerequisites
 
 - Docker Engine and Docker Compose plugin
 - An Authentik (or other OIDC-compliant) instance with an OAuth2/OIDC provider configured
   for NetBox, scopes `openid profile email roles`
-- Network access to a Proxmox host for inventory sync (optional)
 
 ## Setup
 
@@ -33,7 +30,7 @@ automated inventory sync from Proxmox via NetBox SSOT.
    python3 -c "import secrets; print(secrets.token_urlsafe(64))"
    ```
 
-3. Fill in database, Redis, Authentik OIDC, and Proxmox credentials in `.env`.
+3. Fill in database, Redis, and Authentik OIDC credentials in `.env`.
 
 4. Start the stack:
 
@@ -52,8 +49,6 @@ automated inventory sync from Proxmox via NetBox SSOT.
 | `.env.sample` | Template for the required environment variables (copy to `.env`, never commit `.env`) |
 | `configuration/authentik.py` | NetBox config plugin wiring OIDC settings and the auth pipeline |
 | `custom_pipeline.py` | `python-social-auth` pipeline steps: group allow-listing and role/group sync from OIDC claims |
-| `netbox-ssot.yaml` | Config for [NetBox SSOT](https://github.com/bl4ko/netbox-ssot) (Proxmox → NetBox sync) |
-| `netbox-sync.ini` | Config for [netbox-sync](https://github.com/bb-Ricardo/netbox-sync) (alternate Proxmox → NetBox sync tool) |
 | `.gitlab-ci.yml` | CI pipeline: secret detection on every push |
 
 ## Authentication
@@ -63,16 +58,6 @@ Remote auth is delegated to Authentik via OIDC. Access is gated to members of th
 `Netbox_Admins` are granted staff/superuser rights automatically. Group membership is
 re-synced from the OIDC token on every login, so removing a user from a group in
 Authentik revokes NetBox access/roles on their next sign-in.
-
-## Inventory sync
-
-Two independent tools are configured to import Proxmox hosts/VMs into NetBox — pick one:
-
-- **NetBox SSOT** (`netbox-ssot.yaml`) — run as a NetBox plugin/job
-- **netbox-sync** (`netbox-sync.ini`) — run as a standalone sync script
-
-Both read `NETBOX_HOST_FQDN`, `NETBOX_PORT`, `NETBOX_API_TOKEN`, and `PROXMOX_*` from the
-environment.
 
 ## Security
 
