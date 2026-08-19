@@ -18,6 +18,9 @@ infrastructure documentation and IPAM/DCIM, with Authentik OIDC authentication.
 
 ## Setup
 
+For a full walkthrough, including how to configure Authentik as the OIDC provider, see
+[SETUP.md](SETUP.md). Quick reference:
+
 1. Copy the environment template and fill in real values:
 
    ```bash
@@ -49,6 +52,7 @@ infrastructure documentation and IPAM/DCIM, with Authentik OIDC authentication.
 | `.env.sample` | Template for the required environment variables (copy to `.env`, never commit `.env`) |
 | `configuration/authentik.py` | NetBox config plugin wiring OIDC settings and the auth pipeline |
 | `custom_pipeline.py` | `python-social-auth` pipeline steps: group allow-listing and role/group sync from OIDC claims |
+| `SETUP.md` | Full setup walkthrough, including Authentik OIDC provider configuration |
 | `.gitlab-ci.yml` | CI pipeline: secret detection on every push |
 
 ## Authentication
