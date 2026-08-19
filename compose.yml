@@ -11,7 +11,11 @@ services:
     volumes:
       - netbox-postgres:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -q -t 2 -d $${POSTGRES_DB} -U $${POSTGRES_USER}"]
+      test:
+        [
+          "CMD-SHELL",
+          "pg_isready -q -t 2 -d $${POSTGRES_DB} -U $${POSTGRES_USER}",
+        ]
       interval: 10s
       timeout: 5s
       retries: 10
@@ -20,13 +24,22 @@ services:
     image: docker.io/valkey/valkey:9.0-alpine
     container_name: netbox-redis
     restart: unless-stopped
-    command: ["sh", "-c", "valkey-server --appendonly yes --requirepass $${REDIS_PASSWORD}"]
+    command:
+      [
+        "sh",
+        "-c",
+        "valkey-server --appendonly yes --requirepass $${REDIS_PASSWORD}",
+      ]
     environment:
       REDIS_PASSWORD: ${REDIS_PASSWORD}
     volumes:
       - netbox-redis-data:/data
     healthcheck: &redis-health
-      test: ["CMD-SHELL", "[ $$(valkey-cli --pass \"$${REDIS_PASSWORD}\" ping) = 'PONG' ]"]
+      test:
+        [
+          "CMD-SHELL",
+          '[ $$(valkey-cli --pass "$${REDIS_PASSWORD}" ping) = ''PONG'' ]',
+        ]
       interval: 2s
       timeout: 3s
       retries: 20
@@ -35,13 +48,18 @@ services:
     image: docker.io/valkey/valkey:9.0-alpine
     container_name: netbox-redis-cache
     restart: unless-stopped
-    command: ["sh", "-c", "valkey-server --requirepass $${REDIS_CACHE_PASSWORD}"]
+    command:
+      ["sh", "-c", "valkey-server --requirepass $${REDIS_CACHE_PASSWORD}"]
     environment:
       REDIS_CACHE_PASSWORD: ${REDIS_CACHE_PASSWORD}
     volumes:
       - netbox-redis-cache-data:/data
     healthcheck:
-      test: ["CMD-SHELL", "[ $$(valkey-cli --pass \"$${REDIS_CACHE_PASSWORD}\" ping) = 'PONG' ]"]
+      test:
+        [
+          "CMD-SHELL",
+          '[ $$(valkey-cli --pass "$${REDIS_CACHE_PASSWORD}" ping) = ''PONG'' ]',
+        ]
       interval: 2s
       timeout: 3s
       retries: 20
@@ -77,7 +95,6 @@ services:
       timeout: 5s
       retries: 20
       start_period: 180s
-
 
 volumes:
   netbox-postgres:

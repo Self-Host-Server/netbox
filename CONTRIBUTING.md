@@ -32,7 +32,7 @@ accordingly.
 ## Commit messages
 
 Use short, imperative subject lines describing the change (e.g. "Add Redis cache
-healthcheck", not "Fixed stuff"). Explain *why* in the body when the change isn't
+healthcheck", not "Fixed stuff"). Explain _why_ in the body when the change isn't
 self-evident from the diff.
 
 ## Security

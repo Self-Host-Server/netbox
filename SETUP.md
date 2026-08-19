@@ -152,7 +152,7 @@ login independent of OIDC.
 ## Troubleshooting
 
 - **Login redirects back to NetBox but fails silently** — check `docker compose logs
-  netbox` for `social_core` errors; usually a scope/claim mismatch (missing `groups`
+netbox` for `social_core` errors; usually a scope/claim mismatch (missing `groups`
   claim) or `CSRF_TRUSTED_ORIGINS` not matching the request origin.
 - **User logs in but has no access** — the `groups` claim is empty or the user isn't in
   `Netbox_Users`/`Netbox_Admins` in Authentik; check the scope mapping in 5.2 is actually
