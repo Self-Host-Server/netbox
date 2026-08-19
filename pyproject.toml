@@ -20,6 +20,27 @@ body = """
 """
 trim = true
 
+[tool.git-cliff.git]
+conventional_commits = true
+# No catch-all parser: an unprefixed commit is dropped from release notes
+# entirely rather than lumped into a generic bucket. That's deliberate — it's
+# the signal that pushes contributors (human or AI) toward the right prefix
+# instead of silently degrading the changelog. See CONTRIBUTING.md.
+filter_unconventional = true
+commit_parsers = [
+  { message = "^feat", group = "✨ Features" },
+  { message = "^fix", group = "🐛 Bug Fixes" },
+  { message = "^docs", group = "📚 Documentation" },
+  { message = "^refactor", group = "♻️ Refactoring" },
+  { message = "^perf", group = "⚡ Performance" },
+  { message = "^test", group = "🧪 Tests" },
+  { message = "^style", group = "🔧 Chores" },
+  { message = "^build", group = "🔧 Chores" },
+  { message = "^ci", group = "🔧 Chores" },
+  { message = "^chore", group = "🔧 Chores" },
+  { message = "^revert", group = "🔧 Chores" },
+]
+
 
 # =============================================================================
 # RUFF — Python linter & formatter

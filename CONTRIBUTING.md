@@ -31,8 +31,31 @@ accordingly.
 
 ## Commit messages
 
-Use short, imperative subject lines describing the change (e.g. "Add Redis cache
-healthcheck", not "Fixed stuff"). Explain _why_ in the body when the change isn't
+Commit subjects **must** use [Conventional Commits](https://www.conventionalcommits.org/)
+prefixes:
+
+| Prefix | Use for |
+| --- | --- |
+| `feat:` | A new capability |
+| `fix:` | A bug fix |
+| `docs:` | Documentation only |
+| `refactor:` | Code change that isn't a fix or a feature |
+| `perf:` | Performance improvement |
+| `test:` | Adding or correcting tests |
+| `style:` / `build:` / `ci:` / `chore:` | Formatting, tooling, CI, dependency bumps, etc. |
+
+Add `!` after the type (e.g. `fix!:`) or a `BREAKING CHANGE:` footer for a breaking change.
+
+This isn't just style — `.github/workflows/release.yml` parses these prefixes to decide
+the next semver bump, and `git-cliff` (configured in `pyproject.toml`) uses them to
+categorize the auto-generated release changelog. There's intentionally no catch-all
+parser: a commit without a recognized prefix is silently **dropped from the release
+notes entirely**, not filed under a generic bucket. If your subject doesn't fit one of
+these types, it's a sign the commit should probably be split or reworded, not that the
+convention doesn't apply.
+
+Keep subjects short and imperative after the prefix (e.g. "fix: correct Redis cache
+healthcheck", not "fix: fixed stuff"). Explain _why_ in the body when the change isn't
 self-evident from the diff.
 
 ## Security
